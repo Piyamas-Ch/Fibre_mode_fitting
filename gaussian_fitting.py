@@ -611,7 +611,7 @@ def log_data_to_csv(output_folder, gauss):
     formatted_datetime_string = current_datetime.strftime("%Y/%m/%d %H:%M:%S")
 
     # Create and open output csv file
-    with open(output_folder + "\\Fitting_raw_data.csv", 'w', newline='') as f:
+    with open(output_folder + "\\Fitting_raw_data.csv", 'w', encoding="utf-8", newline='') as f:
         writer = csv.writer(f)
         # Write log header
         log_header = [
