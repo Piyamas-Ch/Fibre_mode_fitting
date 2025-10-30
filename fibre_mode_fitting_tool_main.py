@@ -55,7 +55,7 @@ def get_user_input(config_name, config_value, config_file):
     root.withdraw()  # Hide the main window
 
     # Request user input radius value
-    user_r = simpledialog.askfloat("Input", f"x_c = {x_c}, y_c = {y_c}\nPlease enter radius:", initialvalue=config_value[0])
+    user_r = simpledialog.askfloat("Input", "Please enter radius:", initialvalue=config_value[0])
     if user_r is None:
         # If user close window or click cancel, stop input value
         user_sensor_pixel = None
@@ -82,17 +82,17 @@ def get_user_input(config_name, config_value, config_file):
 
     return user_r, user_sensor_pixel, user_sensor_M
 
+# Read config file to get current value of radius, sensor size (pixel) and sensor magnification
 config_file = 'config.txt'
-# Request uset input fit file path
-fit_file = input_fit_file()
-if fit_file is not None:
-    # Reqeust user select region of interest in fit file
-    x_c, y_c = select_region_of_interest(fit_file)
-    if x_c != 0 and y_c != 0:
-        # Read config file to get current value of radius, sensor size (pixel) and sensor magnification
-        config_name, config_value = read_config(config_file)
-        # Reqeust user input radius, sensor size (pixel) and sensor magnification
-        r, sensor_pixel, sensor_M = get_user_input(config_name, config_value, config_file)
-        if r is not None and sensor_pixel is not None and sensor_M is not None:
+config_name, config_value = read_config(config_file)
+# Reqeust user input radius, sensor size (pixel) and sensor magnification
+r, sensor_pixel, sensor_M = get_user_input(config_name, config_value, config_file)
+if r is not None and sensor_pixel is not None and sensor_M is not None:
+    # Request user input fit file path
+    fit_file = input_fit_file()
+    if fit_file is not None:
+        # Reqeust user select region of interest in fit file
+        x_c, y_c = select_region_of_interest(fit_file, r)
+        if x_c != 0 and y_c != 0:
             # Start Gaussian fitting
             gaussian_fitting(fit_file, r, [sensor_pixel, sensor_M], x_c, y_c)
