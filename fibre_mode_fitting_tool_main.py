@@ -4,6 +4,7 @@ import numpy as np
 import tkinter as tk
 from tkinter import simpledialog
 from tkinter import messagebox
+from tkinter import filedialog
 import os
 
 def input_fit_file():
@@ -11,18 +12,35 @@ def input_fit_file():
         def body(self, master):
             tk.Label(master, text="Please enter fit file path:").pack(anchor="w", padx=10, pady=10)
             self.entry = tk.Entry(master, width=60)  # width in characters
-            self.entry.pack(padx=10)
+            self.entry.pack(side=tk.LEFT, padx=(10, 15))
+
+            button = tk.Button(master, text="Browse", command=self.browse_file)
+            button.pack(side=tk.LEFT, padx=(0, 5))
+
             return self.entry
 
         def apply(self):
             self.result = self.entry.get()
 
+        def browse_file(self):
+            file_path = filedialog.askopenfilename(
+                title="Select a FIT file",
+                filetypes=[("FIT files", "*.fit"), ("All files", "*.*")]
+            )
+            if file_path:
+                self.entry.delete(0, tk.END)  # Clear previous text
+                self.entry.insert(0, file_path)  # Insert selected file path
+
+    # Create main window
     root = tk.Tk()
     root.withdraw() # Hide the main window
+    # Frame to hold the text box and button side by side
+    frame = tk.Frame(root)
+    frame.pack(padx=10, pady=10)
 
     input_flag = 1
     while input_flag == 1:
-        dialog = WideInputDialog(root, title="Input")
+        dialog = WideInputDialog(frame, title="Input")
         user_fit_file = dialog.result
         if user_fit_file is None:
             # If user close window or click cancel, stop input value

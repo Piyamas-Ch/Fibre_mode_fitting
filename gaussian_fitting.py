@@ -614,9 +614,10 @@ def log_data_to_csv(output_folder, gauss):
     with open(output_folder + "\\Fitting_raw_data.csv", 'w', encoding="utf-8", newline='') as f:
         writer = csv.writer(f)
         # Write log header
+        fit_file_name = os.path.basename(output_folder)
         log_header = [
                     ['Fiber mode fitting result : ' + formatted_datetime_string],
-                    ['File : ' + output_folder],
+                    ['File : ' + fit_file_name],
                     ['', 'Conventional', '', 'Super', '', 'Ellip'],
                     ['', 'Value','Error', 'Value', 'Error', 'Value', 'Error']
                 ]
